@@ -23,14 +23,14 @@ app.use('/api/game', require('./routes/gameRoutes'));
 
 // Serve static files from React frontend (in production)
 if (process.env.NODE_ENV === 'production') {
-  const __dirname = path.resolve();
-  app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
-
-  // Handle React routing: return all requests to frontend's index.html
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'));
-  });
-}
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
+  
+    // Ensure all non-API routes return the frontend
+    app.get(/^\/(?!api).*/, (req, res) => {  // Regex: all routes except /api/*
+      res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+    });
+  }
 
 // Error handling
 app.use(notFound);

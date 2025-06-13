@@ -11,7 +11,7 @@
     "dev":"concurrently \"npm run server\" \"npm run client\"",
     "build": "npm install && cd frontend && npm install && cd ..",
     "build_prod": "cd frontend && npm install && npm run build",
-    "render-build": "npm run build && npm start"
+    "render-build": "npm run build_prod && npm start"
   },
   "author": "",
   "license": "ISC",
