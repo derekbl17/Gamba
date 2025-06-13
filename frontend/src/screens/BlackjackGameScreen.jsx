@@ -114,7 +114,7 @@ const BlackjackGame = () => {
   const renderCard = (card, index, isDealer = false) => {
     if (isDealer && index === 1 && gameState?.status === "active") {
       return (
-        <div key="hidden" className="card hidden">
+        <div key="hidden" className="Bj-card hidden">
           🂠
         </div>
       );
@@ -128,7 +128,7 @@ const BlackjackGame = () => {
     return (
       <div
         key={`${card.suit}-${card.value}-${index}`}
-        className={`card ${card.suit}`}
+        className={`Bj-card ${card.suit}`}
       >
         <div className="card-value">{value}</div>
         <div className="card-suit">{suit}</div>
