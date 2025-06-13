@@ -9,7 +9,9 @@
     "server": "nodemon backend/server.js",
     "client": "npm run dev --prefix frontend",
     "dev":"concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm install && cd frontend && npm install && cd .."
+    "build": "npm install && cd frontend && npm install && cd ..",
+    "build_prod": "cd frontend && npm install && npm run build",
+    "render-build": "npm run build && npm start"
   },
   "author": "",
   "license": "ISC",
