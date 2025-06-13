@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Button, Row, Col, Container, Card } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
+import UserBalance from "./UserBalance";
 
 const Game = ({ userId }) => {
   const [betAmount, setBetAmount] = useState(10);
@@ -23,7 +24,6 @@ const Game = ({ userId }) => {
     },
     onSuccess: (data) => {
       // Refresh user balance after bet
-      queryClient.invalidateQueries({ queryKey: ["userBalance"] });
 
       setDelayedResult(null);
 
@@ -33,6 +33,7 @@ const Game = ({ userId }) => {
         else playSound(loseSound);
 
         setDelayedResult(data);
+        queryClient.invalidateQueries({ queryKey: ["userBalance"] });
       }, 1000);
     },
     onError: (err) => {
@@ -92,7 +93,7 @@ const Game = ({ userId }) => {
         {isPending ? "Processing..." : "Place Bet"}
       </Button>
 
-      {delayedResult && (
+      {delayedResult ? (
         <Container>
           <p>
             Result: <strong>{delayedResult.result.toUpperCase()}</strong>
@@ -100,6 +101,8 @@ const Game = ({ userId }) => {
           <p>Payout: {delayedResult.payout}</p>
           <p>New Balance: {delayedResult.newBalance}</p>
         </Container>
+      ) : (
+        <UserBalance />
       )}
     </Container>
   );

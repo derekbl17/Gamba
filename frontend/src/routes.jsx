@@ -8,6 +8,8 @@ import {
   AdminScreen,
   NotFoundScreen,
 } from "./screens";
+import BlackjackGameScreen from "./screens/BlackjackGameScreen";
+import CoinGameScreen from "./screens/CoinGameScreen";
 
 export const routes = [
   { index: true, element: <HomeScreen /> },
@@ -17,7 +19,11 @@ export const routes = [
   {
     path: "",
     element: <PrivateRoute allowed={["user", "admin"]} />,
-    children: [{ path: "profile", element: <ProfileScreen /> }],
+    children: [
+      { path: "profile", element: <ProfileScreen /> },
+      { path: "coinflip", element: <CoinGameScreen /> },
+      { path: "blackjack", element: <BlackjackGameScreen /> },
+    ],
   },
   {
     path: "admin",

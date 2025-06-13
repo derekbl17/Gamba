@@ -20,6 +20,7 @@ app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/items', require('./routes/itemRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
 app.use('/api/game', require('./routes/gameRoutes'));
+app.use('/api/blackjack',require('./routes/blackjackRoutes'))
 
 // Serve static files from React frontend (in production)
 if (process.env.NODE_ENV === 'production') {

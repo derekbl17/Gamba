@@ -2,7 +2,6 @@ import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import {
   FaSignInAlt,
   FaSignOutAlt,
-  FaUser,
   FaCog,
   FaUserCircle,
   FaUserPlus,
@@ -39,10 +38,7 @@ export default function Header() {
             to="/"
             className="d-flex align-items-center"
           >
-            <img
-              alt="Poster"
-              style={{ height: "80px" }} // Control image size
-            />
+            <h1>GAMBA</h1>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="main-navbar" />
@@ -52,11 +48,27 @@ export default function Header() {
               {user ? (
                 <>
                   <NavDropdown
-                    title={
-                      <>
-                        <FaUser /> {user.name}
-                      </>
-                    }
+                    title="Games"
+                    className="hover-bg-primary-dark"
+                    menuVariant="dark"
+                  >
+                    <NavDropdown.Item
+                      as={NavLink}
+                      to="/coinflip"
+                      className="dropdown-item-hover"
+                    >
+                      Coin Flip
+                    </NavDropdown.Item>
+                    <NavDropdown.Item
+                      as={NavLink}
+                      to="/blackjack"
+                      className="dropdown-item-hover"
+                    >
+                      BlackJack
+                    </NavDropdown.Item>
+                  </NavDropdown>
+                  <NavDropdown
+                    title={user.name}
                     id="user-dropdown"
                     align="end"
                     className="hover-bg-primary-dark"
