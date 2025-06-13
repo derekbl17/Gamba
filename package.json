@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "none",
   "main": "index.js",
+  "homepage": ".",
   "scripts": {
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",

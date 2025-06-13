@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Form, Button, Row, Col, Container, Card } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -73,7 +74,7 @@ const Game = ({ userId }) => {
   };
 
   return (
-    <div className="bg-blue-900 border-2 border-slate-400 rounded-sm p-2">
+    <Container className="bg-blue-900 border-2 border-slate-400 rounded-sm p-2">
       <h1>Flip a coin</h1>
       <input
         className="bg-stone-800 p-1 w-20 text-center"
@@ -82,24 +83,25 @@ const Game = ({ userId }) => {
         onChange={(e) => setBetAmount(Number(e.target.value))}
         min="1"
       />
-      <button
-        className="bg-emerald-700 rounded-xl mx-2 px-3"
+      <Button
+        className="mx-2"
+        variant="success"
         onClick={() => placeBet(betAmount)}
         disabled={isPending}
       >
         {isPending ? "Processing..." : "Place Bet"}
-      </button>
+      </Button>
 
       {delayedResult && (
-        <div>
+        <Container>
           <p>
             Result: <strong>{delayedResult.result.toUpperCase()}</strong>
           </p>
           <p>Payout: {delayedResult.payout}</p>
           <p>New Balance: {delayedResult.newBalance}</p>
-        </div>
+        </Container>
       )}
-    </div>
+    </Container>
   );
 };
 export default Game;
