@@ -32,14 +32,14 @@
   color: black;
 }
 
-.card.hidden {
+.Bj-card.hidden {
   background: #006400;
   color: white;
   font-size: 2rem;
 }
 
-.card.H, .card.D { color: red; }
-.card.C, .card.S { color: black; }
+.Bj-card.H, .Bj-card.D { color: red; }
+.Bj-card.C, .Bj-card.S { color: black; }
 
 .card-value {
   font-size: 1.5rem;

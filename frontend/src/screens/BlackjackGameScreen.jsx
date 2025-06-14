@@ -168,7 +168,16 @@ const BlackjackGame = () => {
               Dealer {gameState.dealerValue && `(${gameState.dealerValue})`}
             </h2>
             <div className="hand">
-              {gameState.dealerHand.map((card, i) => renderCard(card, i, true))}
+              {gameState.dealerHand
+                .filter(
+                  (card, i) =>
+                    !(
+                      card.suit === "X" &&
+                      card.value === 0 &&
+                      (i !== 1 || gameState.status !== "active")
+                    )
+                )
+                .map((card, i) => renderCard(card, i, true))}
             </div>
           </div>
 
