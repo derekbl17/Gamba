@@ -149,7 +149,6 @@ const BlackjackGame = () => {
             onChange={(e) =>
               setBetAmount(Math.max(1, parseInt(e.target.value) || 1))
             }
-            min="1"
           />
           <Button
             className="mx-2"
