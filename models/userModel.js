@@ -6,7 +6,7 @@ const userSchema=mongoose.Schema({
     email:{type:String, required:true, unique:true},
     password:{type:String, required:true},
     role:{type:String,default:'user'},
-    balance:{type:mongoose.Schema.Types.Decimal128,default:0}
+    balance:{type:mongoose.Schema.Types.Decimal128,default:100000}
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){
