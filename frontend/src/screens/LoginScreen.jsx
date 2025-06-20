@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { FormContainer, Loader } from "../components";
+import { Loader } from "../components";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/authContext";
+import styles from "../effects/form.module.css";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -29,43 +29,53 @@ const LoginScreen = () => {
     }
   };
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="my-2" controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+    <div className={styles.formContainer}>
+      <h1 className={styles.title}>Sign In</h1>
+      <form onSubmit={submitHandler} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
+            Email Address
+          </label>
+          <input
             type="email"
+            id="email"
             placeholder="email@mail.co"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className="my-2" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+            className={styles.input}
+            required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>
+            Password
+          </label>
+          <input
             type="password"
+            id="password"
             placeholder="****"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+            required
+          />
+        </div>
 
         {isLoading && <Loader />}
 
-        <Button type="submit" variant="primary" className="mt-3">
+        <button type="submit" className={styles.submitButton}>
           Sign In
-        </Button>
-        <Row className="py-3">
-          <Col>
-            New Customer?{" "}
-            <Link to="/register" className="text-warning">
-              Register
-            </Link>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+        </button>
+
+        <div className={styles.loginPrompt}>
+          New Customer?{" "}
+          <Link to="/register" className={styles.loginLink}>
+            Register
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 };
 

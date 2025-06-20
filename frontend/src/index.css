@@ -1,6 +1,46 @@
 @import "tailwindcss";
 
-/* BlackjackGame.css */
+.main-container {
+  font-family: monospace;
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  background-image: url('cardsuits.jpg');
+  background-size: 100px 100px;
+}
+
+.custom-container{
+  background: #212529;
+  color: #FFC107;
+  border: 1px solid #FFC107;
+  box-shadow: 1px 1px 3px #ffbf01ad;
+  transition: 300ms;
+}
+.custom-container:hover{
+  box-shadow: 5px 5px 10px #ffc1079c;
+  transition: 300ms;
+}
+.hello{
+  background: #212529e7;
+  color: #FFC107;
+  max-width: fit-content;
+  margin: 20px auto;
+  padding: 10px;
+  border: 1px solid #FFC107;
+  box-shadow: 1px 1px 3px #ffbf01ad;
+}
+
+.game-container{
+  background: #212529;
+  color: #FFC107;
+  border: 1px solid #FFC107;
+  box-shadow: 1px 1px 3px #ffbf01ad;
+  margin: 20px auto;
+  padding: 10px;
+}
+.game-container input{
+  border: 1px solid #FFC107;
+}
 .blackjack-game {
   max-width: 800px;
   margin: 0 auto;
@@ -95,3 +135,4 @@
   border: 1px solid #555;
   margin-right: 10px;
 }
+

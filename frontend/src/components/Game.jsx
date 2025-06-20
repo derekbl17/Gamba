@@ -1,9 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Form, Button, Row, Col, Container, Card } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { toast } from "react-toastify";
-import UserBalance from "./UserBalance";
 
 const Game = ({ userId }) => {
   const [betAmount, setBetAmount] = useState(10);
@@ -28,10 +27,8 @@ const Game = ({ userId }) => {
       setDelayedResult(null);
 
       setTimeout(() => {
-        console.log(data);
         if (data.result === "win") playSound(winSound);
         else playSound(loseSound);
-
         setDelayedResult(data);
         queryClient.invalidateQueries({ queryKey: ["userBalance"] });
       }, 1000);
@@ -75,7 +72,7 @@ const Game = ({ userId }) => {
   };
 
   return (
-    <Container className="bg-blue-900 border-2 border-slate-400 rounded-sm p-2">
+    <Container className="game-container">
       <h1>Flip a coin</h1>
       <input
         className="bg-stone-800 p-1 w-20 text-center"
@@ -93,7 +90,7 @@ const Game = ({ userId }) => {
         {isPending ? "Processing..." : "Place Bet"}
       </Button>
 
-      {delayedResult ? (
+      {delayedResult && (
         <Container>
           <p>
             Result: <strong>{delayedResult.result.toUpperCase()}</strong>
@@ -101,8 +98,6 @@ const Game = ({ userId }) => {
           <p>Payout: {delayedResult.payout}</p>
           <p>New Balance: {delayedResult.newBalance}</p>
         </Container>
-      ) : (
-        <UserBalance />
       )}
     </Container>
   );

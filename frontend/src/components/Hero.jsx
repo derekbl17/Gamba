@@ -3,16 +3,23 @@ import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className=" py-5">
+    <div className="py-5">
       <Container className="d-flex justify-content-center">
-        <Card className="p-5 d-flex flex-column align-items-center hero-card bg-light w-75">
+        <Card className="p-5 d-flex flex-column align-items-center hero-card w-75 custom-container">
           <h1 className="text-center mb-4">Gamba</h1>
-          <p className="text-center mb-4">Welcome! Sign up or login to play</p>
+          <h5 className="text-center mb-4">
+            Welcome! Sign up or login to play
+          </h5>
           <div className="d-flex">
-            <Button variant="primary" as={Link} to="/login" className="me-3">
+            <Button
+              variant="outline-warning"
+              as={Link}
+              to="/login"
+              className="me-3"
+            >
               Sign In
             </Button>
-            <Button variant="secondary" as={Link} to="/register">
+            <Button variant="outline-warning" as={Link} to="/register">
               Register
             </Button>
           </div>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
-import { FormContainer, Loader } from "../components";
+import { Loader } from "../components";
 import { toast } from "react-toastify";
 import { useUpdateUserMutation } from "../api/user";
 import { useAuth } from "../context/authContext";
 import { useQueryClient } from "@tanstack/react-query";
+import styles from "../effects/form.module.css";
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -46,56 +46,72 @@ const ProfileScreen = () => {
     }
   };
   return (
-    <FormContainer>
-      <h1>Update Profile</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="my-2" controlId="name">
-          <Form.Label>User Name</Form.Label>
-          <Form.Control
+    <div className={styles.formContainer}>
+      <h1 className={styles.title}>Update Profile</h1>
+      <form onSubmit={submitHandler} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="name" className={styles.label}>
+            User Name
+          </label>
+          <input
             type="text"
+            id="name"
             placeholder="user123.."
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+          />
+        </div>
 
-        <Form.Group className="my-2" controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
+            Email Address
+          </label>
+          <input
             type="email"
+            id="email"
             placeholder="email@mail.co"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+          />
+        </div>
 
-        <Form.Group className="my-2" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>
+            Password
+          </label>
+          <input
             type="password"
+            id="password"
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+          />
+        </div>
 
-        <Form.Group className="my-2" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
+        <div className={styles.formGroup}>
+          <label htmlFor="confirmPassword" className={styles.label}>
+            Confirm Password
+          </label>
+          <input
             type="password"
+            id="confirmPassword"
             placeholder="Confirm password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+          />
+        </div>
 
         {isLoading && <Loader />}
 
-        <Button type="submit" variant="primary" className="mt-3">
+        <button type="submit" className={styles.submitButton}>
           Update
-        </Button>
-      </Form>
-    </FormContainer>
+        </button>
+      </form>
+    </div>
   );
 };
 

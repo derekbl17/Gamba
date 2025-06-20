@@ -6,8 +6,10 @@ const HomeScreen = () => {
   if (!user) return <Hero />;
   return (
     <>
-      <h1>Hello {user.name}!</h1>
-      <UserBalance />
+      <div className="hello">
+        <h1>Hello {user.name}!</h1>
+        <UserBalance />
+      </div>
     </>
   );
 };

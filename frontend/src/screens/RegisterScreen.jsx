@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { FormContainer, Loader } from "../components";
 import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "../api/user";
+import styles from "../effects/form.module.css";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -34,74 +33,81 @@ const RegisterScreen = () => {
   };
 
   return (
-    <FormContainer>
-      <h1>Sign up</h1>
-      <Form onSubmit={submitHandler}>
-        <Form.Group className="my-2" controlId="name">
-          <Form.Label>User Name</Form.Label>
-          <Form.Control
-            required
+    <div className={styles.formContainer}>
+      <h1 className={styles.title}>Sign Up</h1>
+      <form onSubmit={submitHandler} className={styles.form}>
+        <div className={styles.formGroup}>
+          <label htmlFor="name" className={styles.label}>
+            User Name
+          </label>
+          <input
             type="text"
-            placeholder="user123.."
+            id="name"
+            placeholder="user123..."
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className="my-2" controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+            className={styles.input}
             required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="email" className={styles.label}>
+            Email Address
+          </label>
+          <input
             type="email"
+            id="email"
             placeholder="email@mail.co"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className="my-2" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+            className={styles.input}
             required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="password" className={styles.label}>
+            Password
+          </label>
+          <input
             type="password"
+            id="password"
             placeholder="****"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-
-        <Form.Group className="my-2" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
+            className={styles.input}
             required
+          />
+        </div>
+
+        <div className={styles.formGroup}>
+          <label htmlFor="confirmPassword" className={styles.label}>
+            Confirm Password
+          </label>
+          <input
             type="password"
+            id="confirmPassword"
             placeholder="****"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className={styles.input}
+            required
+          />
+        </div>
 
-        {registerMutation.isPending && <Loader />}
-
-        <Button
-          type="submit"
-          variant="primary"
-          className="mt-3"
-          disabled={registerMutation.isPending}
-        >
+        <button type="submit" className={styles.submitButton}>
           Sign Up
-        </Button>
+        </button>
 
-        <Row className="py-3">
-          <Col>
-            Already have an account?{" "}
-            <Link to="/login" className="text-warning">
-              Login
-            </Link>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+        <div className={styles.loginPrompt}>
+          Already have an account?{" "}
+          <Link to="/login" className={styles.loginLink}>
+            Login
+          </Link>
+        </div>
+      </form>
+    </div>
   );
 };
 

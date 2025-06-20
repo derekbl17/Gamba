@@ -137,7 +137,7 @@ const BlackjackGame = () => {
   };
 
   return (
-    <Container className="bg-blue-900 border-2 border-slate-400 rounded-sm p-2">
+    <Container className="game-container">
       <h1>Blackjack</h1>
 
       {!gameState ? (
