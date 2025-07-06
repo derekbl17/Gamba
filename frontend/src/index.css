@@ -5,7 +5,7 @@
   position: relative;
   overflow: hidden;
   height: 100vh;
-  background-image: url('cardsuits.jpg');
+  background-image: url('/cardsuits.jpg');
   background-size: 100px 100px;
 }
 
