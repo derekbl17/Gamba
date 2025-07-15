@@ -1,27 +1,27 @@
-import { CurrencyManager } from '../utils/currencyManager.js';
-import BlackjackGame from '../models/blackjackGameModel.js';
+import { CurrencyManager } from "../utils/currencyManager.js";
+import BlackjackGame from "../models/blackjackGameModel.js";
 
 // Helper function to calculate hand value (Aces can be 1 or 11)
 function calculateHandValue(hand) {
   let value = hand.reduce((total, card) => total + Math.min(card.value, 10), 0);
-  const aces = hand.filter(card => card.value === 1).length;
-  
+  const aces = hand.filter((card) => card.value === 1).length;
+
   // Handle Aces as 11 if possible
   for (let i = 0; i < aces; i++) {
     if (value + 10 <= 21) {
       value += 10;
     }
   }
-  
+
   return value;
 }
 
 // Helper to create a shuffled deck (6 decks as in casinos)
 function createShuffledDeck() {
-  const suits = ['H', 'D', 'C', 'S'];
+  const suits = ["H", "D", "C", "S"];
   const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
   let deck = [];
-  
+
   // 6 decks
   for (let i = 0; i < 6; i++) {
     for (const suit of suits) {
@@ -30,13 +30,13 @@ function createShuffledDeck() {
       }
     }
   }
-  
+
   // Fisher-Yates shuffle
   for (let i = deck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [deck[i], deck[j]] = [deck[j], deck[i]];
   }
-  
+
   return deck;
 }
 
@@ -44,25 +44,26 @@ export const blackJackBet = async (req, res) => {
   const { amount } = req.body;
   const { userId } = req.user;
 
-  if (amount < 1) return res.status(400).json({ message: "Minimum bet is 1 credit" });
+  if (amount < 1)
+    return res.status(400).json({ message: "Minimum bet is 1 credit" });
 
   try {
     // Check for existing game
-    let game = await BlackjackGame.findOne({ 
-      userId, 
-      status: 'active'
+    let game = await BlackjackGame.findOne({
+      userId,
+      status: "active",
     });
 
     if (game) {
-      return res.status(400).json({ 
-        success: false, 
-        error: "You already have an active game" 
+      return res.status(400).json({
+        success: false,
+        error: "You already have an active game",
       });
     }
 
     // Deduct bet amount
     await CurrencyManager.deduct(userId, amount);
-    
+
     // Create new game
     game = new BlackjackGame({
       userId,
@@ -70,7 +71,7 @@ export const blackJackBet = async (req, res) => {
       playerHand: [],
       dealerHand: [],
       betAmount: amount,
-      status: 'active'
+      status: "active",
     });
 
     // Deal initial cards
@@ -93,8 +94,8 @@ export const blackJackBet = async (req, res) => {
         result = "blackjack";
         payout = amount * 2.5;
       }
-      
-      game.status = 'completed';
+
+      game.status = "completed";
       if (payout > 0) {
         await CurrencyManager.add(userId, payout);
       }
@@ -107,18 +108,17 @@ export const blackJackBet = async (req, res) => {
       success: true,
       gameState: {
         playerHand: game.playerHand,
-        dealerHand: [game.dealerHand[0], { suit: 'X', value: 0 }],
+        dealerHand: [game.dealerHand[0], { suit: "X", value: 0 }],
         playerValue,
         dealerFirstCardValue: calculateHandValue([game.dealerHand[0]]),
         dealerValue: result ? dealerValue : null,
         status: game.status,
-        betAmount: amount
+        betAmount: amount,
       },
       result,
       payout,
-      newBalance: await CurrencyManager.getBalance(userId)
+      newBalance: await CurrencyManager.getBalance(userId),
     });
-
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }
@@ -129,13 +129,15 @@ export const blackjackAction = async (req, res) => {
   const { userId } = req.user;
 
   try {
-    let game = await BlackjackGame.findOne({ 
-      userId, 
-      status: 'active'
+    let game = await BlackjackGame.findOne({
+      userId,
+      status: "active",
     });
 
     if (!game) {
-      return res.status(400).json({ success: false, error: "No active game found" });
+      return res
+        .status(400)
+        .json({ success: false, error: "No active game found" });
     }
 
     let result = null;
@@ -143,16 +145,15 @@ export const blackjackAction = async (req, res) => {
 
     if (action === "hit") {
       game.playerHand.push(game.deck.pop());
-      
+
       const playerValue = calculateHandValue(game.playerHand);
-      
+
       if (playerValue > 21) {
         result = "lose";
         payout = 0;
-        game.status = 'completed';
+        game.status = "completed";
       }
-    } 
-    else if (action === "stand") {
+    } else if (action === "stand") {
       // Dealer draws until they have at least 17
       while (calculateHandValue(game.dealerHand) < 17) {
         game.dealerHand.push(game.deck.pop());
@@ -175,7 +176,7 @@ export const blackjackAction = async (req, res) => {
         payout = game.betAmount;
       }
 
-      game.status = 'completed';
+      game.status = "completed";
     }
 
     // Save game state
@@ -191,18 +192,20 @@ export const blackjackAction = async (req, res) => {
       success: true,
       gameState: {
         playerHand: game.playerHand,
-        dealerHand: action === "stand" ? game.dealerHand : [game.dealerHand[0], { suit: 'X', value: 0 }],
+        dealerHand:
+          game.status === "completed"
+            ? game.dealerHand
+            : [game.dealerHand[0], { suit: "X", value: 0 }],
         playerValue: calculateHandValue(game.playerHand),
         dealerFirstCardValue: calculateHandValue([game.dealerHand[0]]),
         dealerValue: result ? calculateHandValue(game.dealerHand) : null,
         status: game.status,
-        betAmount: game.betAmount
+        betAmount: game.betAmount,
       },
       result,
       payout,
-      newBalance: await CurrencyManager.getBalance(userId)
+      newBalance: await CurrencyManager.getBalance(userId),
     });
-
   } catch (error) {
     res.status(400).json({ success: false, error: error.message });
   }
@@ -212,25 +215,25 @@ export const blackjackStatus = async (req, res) => {
   const { userId } = req.user;
 
   try {
-    const game = await BlackjackGame.findOne({ 
+    const game = await BlackjackGame.findOne({
       userId,
-      status: 'active'
+      status: "active",
     });
 
     if (!game) {
-      return res.status(404).json({ message: 'No active game found' });
+      return res.status(404).json({ message: "No active game found" });
     }
 
     res.json({
       gameState: {
         playerHand: game.playerHand,
-        dealerHand: [game.dealerHand[0], { suit: 'X', value: 0 }],
+        dealerHand: [game.dealerHand[0], { suit: "X", value: 0 }],
         playerValue: calculateHandValue(game.playerHand),
         dealerFirstCardValue: calculateHandValue([game.dealerHand[0]]),
         status: game.status,
-        betAmount: game.betAmount
+        betAmount: game.betAmount,
       },
-      betAmount: game.betAmount
+      betAmount: game.betAmount,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -242,13 +245,13 @@ export const blackjackSurrender = async (req, res) => {
 
   try {
     const game = await BlackjackGame.findOneAndUpdate(
-      { userId, status: 'active' },
-      { status: 'completed' },
+      { userId, status: "active" },
+      { status: "completed" },
       { new: true }
     );
 
     if (!game) {
-      return res.status(404).json({ message: 'No active game found' });
+      return res.status(404).json({ message: "No active game found" });
     }
 
     // Return half of the bet
@@ -258,7 +261,7 @@ export const blackjackSurrender = async (req, res) => {
     res.json({
       success: true,
       refundAmount,
-      newBalance: await CurrencyManager.getBalance(userId)
+      newBalance: await CurrencyManager.getBalance(userId),
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
